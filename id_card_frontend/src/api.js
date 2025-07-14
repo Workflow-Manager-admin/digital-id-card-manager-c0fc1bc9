@@ -39,10 +39,14 @@ export async function loginUser(email, password) {
   return request("/auth/login", "POST", { email, password });
 }
 
-// PUBLIC_INTERFACE
-export async function signupUser(email, password, role, name) {
+/**
+ * PUBLIC_INTERFACE
+ * Sign up a user, returns { token, user }
+ * Now submits only email, password, name (no role).
+ */
+export async function signupUser(email, password, _role, name) {
   /** Sign up a user, returns { token, user } */
-  return request("/auth/signup", "POST", { email, password, role, name });
+  return request("/auth/signup", "POST", { email, password, name });
 }
 
 // PUBLIC_INTERFACE

@@ -3,23 +3,21 @@ import "./Navbar.css";
 
 // PUBLIC_INTERFACE
 function Navbar({ user, onLogout, theme, toggleTheme }) {
-  // user: {name, role}, or null
+  // user: {name}, or null
 
-  // Refined navigation: admins see Dashboard/ID Cards/Users; holders see Dashboard and ID Cards; users see Dashboard
+  // All authenticated users see Dashboard, ID Cards, and Users links;
+  // Unauthenticated users see Login/SignUp
   return (
     <nav className="navbar">
       <div className="navbar-brand">Digital ID Manager</div>
       <div className="navbar-links">
-        {user && (
+        {user ? (
           <>
             <a href="/dashboard">Dashboard</a>
-            {(user.role === "admin" || user.role === "holder") && (
-              <a href="/idcards">ID Cards</a>
-            )}
-            {user.role === "admin" && <a href="/users">Users</a>}
+            <a href="/idcards">ID Cards</a>
+            <a href="/users">Users</a>
           </>
-        )}
-        {!user && (
+        ) : (
           <>
             <a href="/login">Login</a>
             <a href="/signup">Sign Up</a>
@@ -36,7 +34,7 @@ function Navbar({ user, onLogout, theme, toggleTheme }) {
         </button>
         {user && (
           <span className="navbar-user">
-            {user.name} ({user.role})
+            {user.name}
             <button className="logout-btn" onClick={onLogout}>
               Logout
             </button>

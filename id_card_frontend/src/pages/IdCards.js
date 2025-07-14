@@ -82,7 +82,7 @@ function IdCards({ token, user }) {
     <div className="idcards-page">
       <h2>Digital ID Cards</h2>
       <div style={{ textAlign: "right", marginBottom: "0.5rem" }}>
-        {(user?.role === "admin" || user?.role === "holder") && (
+        {user && (
           <button className="btn" onClick={handleCreate}>
             + New ID Card
           </button>
@@ -99,13 +99,11 @@ function IdCards({ token, user }) {
               <strong>{card.name}</strong>
               <div>ID Number: <span>{card.unique_number}</span></div>
               <div>Email: {card.email}</div>
-              <div>
-                {card.role === "holder" && <>ROLE: HOLDER</>}
-                {card.role === "user" && <>ROLE: USER</>}
-              </div>
+              {/* Remove role display */}
               <div className="card-actions">
                 <button onClick={() => window.open(`/display/${card.id}`, "_blank")}>View</button>
-                {(user.role === "admin" || (user.role === "holder" && user.id === card.user_id)) && (
+                {/* All users may edit/delete their cards, else edit/delete is shown for now */}
+                {(user && (user.id === card.user_id)) && (
                   <>
                     <button onClick={() => handleEdit(card)}>Edit</button>
                     <button onClick={() => handleDelete(card.id)} style={{ color: "#D32F2F" }}>

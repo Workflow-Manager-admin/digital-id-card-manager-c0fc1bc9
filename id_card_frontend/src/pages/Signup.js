@@ -6,8 +6,7 @@ function Signup({ onAuth, error, setError }) {
   const [form, setForm] = useState({
     email: "",
     password: "",
-    name: "",
-    role: "holder"
+    name: ""
   });
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +21,8 @@ function Signup({ onAuth, error, setError }) {
     setLoading(true);
     setError(null);
     try {
-      const data = await signupUser(form.email, form.password, form.role, form.name);
+      // Role is omitted; backend should assign default role if necessary.
+      const data = await signupUser(form.email, form.password, undefined, form.name);
       onAuth(data.token, data.user);
     } catch (err) {
       setError(err?.message || "Signup failed");
@@ -71,14 +71,6 @@ function Signup({ onAuth, error, setError }) {
           autoComplete="new-password"
           onChange={handleChange}
         />
-      </div>
-      <div>
-        <label htmlFor="role">Role:</label>
-        <select id="role" name="role" value={form.role} onChange={handleChange}>
-          <option value="holder">Holder</option>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
       </div>
       {error && <div className="auth-error">{error}</div>}
       <button type="submit" disabled={loading}>

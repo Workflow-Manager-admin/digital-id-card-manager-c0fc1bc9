@@ -103,7 +103,7 @@ function App() {
   else if (page === "login") PageComponent = <Login onAuth={handleAuth} error={authError} setError={setAuthError} />;
   else if (page === "signup") PageComponent = <Signup onAuth={handleAuth} error={authError} setError={setAuthError} />;
   else if (page === "idcards" && isAuthenticated) PageComponent = <IdCards token={token} user={user} />;
-  else if (page === "users" && isAuthenticated && user?.role === "admin") PageComponent = <Users token={token} />;
+  else if (page === "users" && isAuthenticated) PageComponent = <Users token={token} />;
   else if (page === "display" && id) PageComponent = <Display id={id} />;
   else if (page === "404") PageComponent = <div style={{ textAlign: "center", marginTop: 50 }}>404 Not Found</div>;
   else PageComponent = <div style={{ textAlign: "center", marginTop: 50 }}>Please login to continue.</div>;
