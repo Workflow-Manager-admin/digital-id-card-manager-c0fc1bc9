@@ -20,7 +20,14 @@ App runs at [http://localhost:3000](http://localhost:3000).
 
 ## 🌎 Environment Variables
 
-Edit `.env` to configure backend API URL.
+See `.env.example` for how to configure environment variables.
+
+- Edit `.env` to configure the backend API URL.
+- Typical development setting:
+
+```
+REACT_APP_API_URL=http://localhost:5000
+```
 
 | Variable              | Purpose                       | Example                      |
 |-----------------------|-------------------------------|------------------------------|
