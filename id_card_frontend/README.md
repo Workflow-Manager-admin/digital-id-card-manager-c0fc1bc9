@@ -1,65 +1,59 @@
 # Digital ID Card Manager – Frontend (React)
 
-This React frontend enables users to register, log in, and manage digital ID cards. All user flows are role-agnostic—after login/signup, users may create, update, view, or delete digital ID cards and view all user profiles.
+This is the React-based frontend for managing digital ID cards, featuring user signup/login, card CRUD, card-linking flows, and full REST API integration.
 
-> **Note:** There are _no user roles/RBAC_: after authentication, all users see and access the same UI and functions.
+_All users operate with full CRUD after authentication (no roles/RBAC enforced in frontend)._
 
 ---
 
-## 🛠 Quickstart
+## 🚀 Quickstart
 
 ```bash
 npm install
-cp .env.example .env   # Set your backend URL in .env
+cp .env.example .env          # Edit backend URL
 npm start
 ```
-Runs at [http://localhost:3000](http://localhost:3000).
+
+App runs at [http://localhost:3000](http://localhost:3000).
 
 ---
 
 ## 🌎 Environment Variables
 
-Edit `.env` in this folder for backend config:
+Edit `.env` to configure backend API URL.
 
-| Variable              | Purpose                            | Example                       |
-|-----------------------|------------------------------------|-------------------------------|
-| REACT_APP_API_URL     | Base URL to Flask backend API      | http://localhost:5000         |
-
-API calls are made to `${REACT_APP_API_URL}` (see `src/api.js`).
-
-#### Example `.env`
-```
-REACT_APP_API_URL=http://localhost:5000
-```
+| Variable              | Purpose                       | Example                      |
+|-----------------------|-------------------------------|------------------------------|
+| REACT_APP_API_URL     | Base URL to backend API       | http://localhost:5000        |
 
 ---
 
-## 🏗️ Application Structure
+## 🏗️ App File Structure
 
-- **Core App**: `src/App.js`
-- **API Logic/Endpoints**: `src/api.js`
-- **Login/Signup**: `src/pages/Login.js`, `src/pages/Signup.js`
-- **Dashboard**: `src/pages/Dashboard.js`
-- **ID Card Management**: `src/pages/IdCards.js`, `src/pages/Display.js`
-- **User List**: `src/pages/Users.js`
-- **Navbar/Navigation**: `src/components/Navbar.js`
+- `src/App.js`: Core Application and Router
+- `src/api.js`: API Calls, all auth/card/user/holder endpoints
+- `src/pages/Login.js` / `Signup.js`: Authentication forms
+- `src/pages/IdCards.js`: Full ID Card CRUD UI
+- `src/pages/Dashboard.js`: App landing page after login
+- `src/pages/Users.js`: User profile listing
+- `src/pages/Display.js`: Digital card public view
+- `src/components/Navbar.js`: Navigation and theming
 
 ---
 
 ## ✨ Main Features
 
-- User **sign up/login** (JWT-based authentication)
-- **CRUD** for Digital ID Cards: create, edit, delete, and display as digital card
-- View all users
-- **ID Card Linking & Uniqueness**: Each card has a unique identifier, and is linkable to a profile
-- Responsive, modern, minimal UI
-- All API calls are secured with JWT via Authorization header
+- **Signup/Login:** JWT authentication to backend (`/auth/login`, `/auth/signup`)
+- **Digital ID Card CRUD:** Create, edit, delete, and view cards
+- **Linking:** Digital ID cards can be associated (linked) to holders
+- **Users & Holders:** List of users and holders for linking/searching
+- **Responsive UI:** Fully mobile-friendly with modern design and dark mode
 
 ---
 
-## 🔗 Backend API Integration
+## 🔗 API Integration
 
-Endpoints used (see backend OpenAPI spec):
+All calls are made to `${REACT_APP_API_URL}`. Backend API spec endpoints:
 
 - `POST   /auth/login` – User login
 - `POST   /auth/signup` – User signup
@@ -68,28 +62,25 @@ Endpoints used (see backend OpenAPI spec):
 - `GET    /idcards/:id` – Get an ID card
 - `PUT    /idcards/:id` – Update an ID card
 - `DELETE /idcards/:id` – Delete an ID card
-- `GET    /users` – List all users
-- (Also: `/holders`, `/idcards/link` for unique linking logic)
+- `POST   /idcards/link` – Link card to holder
+- `GET    /users` – List users
+- `GET    /holders` – List holders
 
----
-
-## 🧑‍💻 Development
-
-- Update API endpoint URLs in `src/api.js` only if backend changes (matches Flask OpenAPI spec).
-- UI: modify `src/App.css`, `src/pages/*.css`, or components as desired.
+_All requests use JWT bearer token (Authorization header) if authenticated._
 
 ---
 
 ## 📲 Usage Flow
 
-1. **Register / Login** (Email and password only)
-2. Manage your digital ID cards, or view/CRUD all (based on backend logic)
-3. Edit/Delete any card you own, or create new cards
-4. View cards via Dashboard or directly by link (URL/shareable)
+1. Register or login (email & password)
+2. Manage (create/update/delete) digital ID cards after login
+3. Link ID cards to users/holders (if required by backend logic)
+4. View all registered users and holders
+5. Display/share digital ID card via direct link
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 npm test
@@ -97,23 +88,23 @@ npm test
 
 ---
 
-## 🔒 Authentication
+## 🔒 Auth
 
-- JWT tokens are stored in `localStorage`
-- Sent on every request in `Authorization: Bearer ...` header
-
----
-
-## 🏗️ Full Stack Integration
-
-1. **Database**: see backend/db README for details
-2. **Backend API**: must be running and accessible at `REACT_APP_API_URL`
-3. **Frontend**: configure `.env`, then run with `npm start`
+- JWT token stored in `localStorage`
+- Added to every API request via `Authorization: Bearer ...`
 
 ---
 
-## 📃 Further Docs
+## Development Notes
 
-- For backend/database configuration and schema, see their respective READMEs.
+- All navigation is client-side, no page reloads
+- Update endpoint URLs (`src/api.js`) as backend evolves
+
+---
+
+## Full Stack Integration
+
+- Backend and DB must be running per their (README)
+- This frontend expects an OpenAPI-compliant backend (see above)
 
 ---
