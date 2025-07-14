@@ -1,82 +1,110 @@
-# Lightweight React Template for KAVIA
+# Digital ID Card Manager – Frontend (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+This is the React web frontend for the Digital ID Card Manager app. Users can register, log in, create/edit/view Digital ID cards, and connect with the backend REST API.
 
-## Features
+---
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+## 🛠 Quickstart
 
-## Getting Started
+```bash
+npm install
+npm start
+```
+Runs at [http://localhost:3000](http://localhost:3000) by default.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🌎 Environment Variables
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Configuration is done via a `.env` file in this directory.
 
-### `npm test`
+| Variable              | Purpose                              | Example                       |
+|-----------------------|--------------------------------------|-------------------------------|
+| REACT_APP_API_URL     | **Base URL to Backend (Flask API)**  | http://localhost:5000         |
 
-Launches the test runner in interactive watch mode.
+- Update `REACT_APP_API_URL` in `.env` to point to your backend location for both local dev and deployment.
+- The variable is required for API calls (see `src/api.js`).
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
+#### Example `.env`
+```
+REACT_APP_API_URL=http://localhost:5000
 ```
 
-### Components
+---
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+## 🏗️ Integration Flow
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+**Frontend (React) ⇄ Backend (Flask REST API) ⇄ Database (PostgreSQL)**
 
-## Learn More
+- All API calls are routed to the Flask backend specified by `REACT_APP_API_URL`.
+- The backend URL _must_ be reachable from your browser (CORS is enabled by default in the backend).
+- The backend, in turn, interacts with the PostgreSQL database using its own environment config.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**API endpoints used:**
+- `/auth/login`, `/auth/signup`
+- `/idcards` and related
+- `/holders` etc.
 
-### Code Splitting
+Update the backend endpoint with your deployment or dev server.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 👩‍💻 Development/Customization
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Edit `src/api.js` for custom endpoints or headers.
+- UI styles and layout are customizable in `src/App.css` and components.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🔗 E2E Integration (Full Stack Setup)
 
-### Advanced Configuration
+**1. Start the Database**
+- See `../digital-id-card-manager-e92f97cd/README.md` for DB setup and environment variables.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**2. Start the Backend API**
+- Configure DB environment vars as in the backend README.
+- Run Flask API (`python run.py` or via WSGI).
 
-### Deployment
+**3. Configure the Frontend**
+- Set `REACT_APP_API_URL` in your `.env` file.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**4. Start the Frontend**
+```
+npm install
+npm start
+```
 
-### `npm run build` fails to minify
+- Open [http://localhost:3000](http://localhost:3000)
+- Sign up, log in, and test the app via the UI.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🔒 Authentication
+
+- JWT tokens returned from the backend are stored in `localStorage` and sent with each API call as `Authorization: Bearer ...` header.
+
+---
+
+## 📂 Codebase Structure
+
+- Core App: `src/App.js`
+- API Logic: `src/api.js`
+- Pages: `src/pages/`
+- Components: `src/components/`
+
+---
+
+## 🧪 Testing
+
+```bash
+npm test
+```
+
+---
+
+## 📃 Further Documentation
+
+- See backend and db READMEs for further details on backend configuration and table schema.
+
+---
+
