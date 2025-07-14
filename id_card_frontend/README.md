@@ -2,6 +2,8 @@
 
 This is the React web frontend for the Digital ID Card Manager app. Users can register, log in, create/edit/view Digital ID cards, and connect with the backend REST API.
 
+> **Note:** User authentication is **generic only**. There are no user roles, RBAC (role-based access control), or any permission differences—all users see the same features and user interface after login or signup. There is no distinction between user types.
+
 ---
 
 ## 🛠 Quickstart
