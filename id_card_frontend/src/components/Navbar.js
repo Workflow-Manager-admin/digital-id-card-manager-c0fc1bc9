@@ -5,15 +5,14 @@ import "./Navbar.css";
 function Navbar({ user, onLogout, theme, toggleTheme }) {
   // user: {name, role}, or null
 
+  // Refined navigation: admins see Dashboard/ID Cards/Users; holders see Dashboard and ID Cards; users see Dashboard
   return (
     <nav className="navbar">
       <div className="navbar-brand">Digital ID Manager</div>
       <div className="navbar-links">
         {user && (
           <>
-            {(user.role === "admin" || user.role === "user") && (
-              <a href="/dashboard">Dashboard</a>
-            )}
+            <a href="/dashboard">Dashboard</a>
             {(user.role === "admin" || user.role === "holder") && (
               <a href="/idcards">ID Cards</a>
             )}

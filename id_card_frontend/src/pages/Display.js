@@ -28,17 +28,70 @@ function Display({ id }) {
 
   if (!card) return <div className="idcard-display">Loading...</div>;
 
+  const expired =
+    card.expiry && new Date(card.expiry) < new Date();
+
   return (
     <div className="idcard-display">
-      <div className="idcard">
-        <div className="idcard-title">Digital ID Card</div>
-        <div className="idcard-row">Name: <b>{card.name}</b></div>
-        <div className="idcard-row">ID Number: {card.unique_number}</div>
-        <div className="idcard-row">Email: {card.email}</div>
-        <div className="idcard-row">Address: {card.address}</div>
-        <div className="idcard-row">Expiry: {card.expiry}</div>
-        <div className="idcard-row">Metadata: {card.metadata}</div>
-        {/* Placeholder for QR code, etc. */}
+      <div
+        className="idcard"
+        style={{
+          border: `2.5px solid ${expired ? "#d32f2f" : "#1976D2"}`,
+          background:
+            "linear-gradient(120deg, var(--bg-primary) 70%, #fafafa 100%)",
+        }}
+      >
+        <div
+          className="idcard-title"
+          style={{
+            marginBottom: "0.8rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          Digital ID Card
+          <span
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: expired ? "#d32f2f" : "#1976D2",
+              marginLeft: 7,
+            }}
+          >
+            {expired ? "EXPIRED" : card.status === "active" ? "ACTIVE" : ""}
+          </span>
+        </div>
+
+        <div className="idcard-row">
+          <b>Name:</b> {card.name}
+        </div>
+        <div className="idcard-row">
+          <b>ID Number:</b> {card.unique_number}
+        </div>
+        <div className="idcard-row">
+          <b>Email:</b> {card.email}
+        </div>
+        <div className="idcard-row">
+          <b>Address:</b> {card.address}
+        </div>
+        <div className="idcard-row">
+          <b>Expiry:</b>{" "}
+          {card.expiry
+            ? new Date(card.expiry).toLocaleDateString()
+            : "N/A"}
+        </div>
+        {card.metadata && card.metadata.trim() && (
+          <div className="idcard-row">
+            <b>Notes:</b> {card.metadata}
+          </div>
+        )}
+        <div style={{ textAlign: "center", marginTop: 14 }}>
+          {/* Placeholder for QR code/future badges */}
+          <span style={{ color: "#1976D2", fontWeight: 600, fontSize: 13 }}>
+            {card.role && `Role: ${card.role.toUpperCase()}`}
+          </span>
+        </div>
       </div>
     </div>
   );
