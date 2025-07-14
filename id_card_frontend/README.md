@@ -1,8 +1,8 @@
 # Digital ID Card Manager – Frontend (React)
 
-This is the React web frontend for the Digital ID Card Manager app. Users can register, log in, create/edit/view Digital ID cards, and connect with the backend REST API.
+This React frontend enables users to register, log in, and manage digital ID cards. All user flows are role-agnostic—after login/signup, users may create, update, view, or delete digital ID cards and view all user profiles.
 
-> **Note:** User authentication is **generic only**. There are no user roles, RBAC (role-based access control), or any permission differences—all users see the same features and user interface after login or signup. There is no distinction between user types.
+> **Note:** There are _no user roles/RBAC_: after authentication, all users see and access the same UI and functions.
 
 ---
 
@@ -10,22 +10,22 @@ This is the React web frontend for the Digital ID Card Manager app. Users can re
 
 ```bash
 npm install
+cp .env.example .env   # Set your backend URL in .env
 npm start
 ```
-Runs at [http://localhost:3000](http://localhost:3000) by default.
+Runs at [http://localhost:3000](http://localhost:3000).
 
 ---
 
 ## 🌎 Environment Variables
 
-Configuration is done via a `.env` file in this directory.
+Edit `.env` in this folder for backend config:
 
-| Variable              | Purpose                              | Example                       |
-|-----------------------|--------------------------------------|-------------------------------|
-| REACT_APP_API_URL     | **Base URL to Backend (Flask API)**  | http://localhost:5000         |
+| Variable              | Purpose                            | Example                       |
+|-----------------------|------------------------------------|-------------------------------|
+| REACT_APP_API_URL     | Base URL to Flask backend API      | http://localhost:5000         |
 
-- Update `REACT_APP_API_URL` in `.env` to point to your backend location for both local dev and deployment.
-- The variable is required for API calls (see `src/api.js`).
+API calls are made to `${REACT_APP_API_URL}` (see `src/api.js`).
 
 #### Example `.env`
 ```
@@ -34,65 +34,58 @@ REACT_APP_API_URL=http://localhost:5000
 
 ---
 
-## 🏗️ Integration Flow
+## 🏗️ Application Structure
 
-**Frontend (React) ⇄ Backend (Flask REST API) ⇄ Database (PostgreSQL)**
-
-- All API calls are routed to the Flask backend specified by `REACT_APP_API_URL`.
-- The backend URL _must_ be reachable from your browser (CORS is enabled by default in the backend).
-- The backend, in turn, interacts with the PostgreSQL database using its own environment config.
-
-**API endpoints used:**
-- `/auth/login`, `/auth/signup`
-- `/idcards` and related
-- `/holders` etc.
-
-Update the backend endpoint with your deployment or dev server.
+- **Core App**: `src/App.js`
+- **API Logic/Endpoints**: `src/api.js`
+- **Login/Signup**: `src/pages/Login.js`, `src/pages/Signup.js`
+- **Dashboard**: `src/pages/Dashboard.js`
+- **ID Card Management**: `src/pages/IdCards.js`, `src/pages/Display.js`
+- **User List**: `src/pages/Users.js`
+- **Navbar/Navigation**: `src/components/Navbar.js`
 
 ---
 
-## 👩‍💻 Development/Customization
+## ✨ Main Features
 
-- Edit `src/api.js` for custom endpoints or headers.
-- UI styles and layout are customizable in `src/App.css` and components.
-
----
-
-## 🔗 E2E Integration (Full Stack Setup)
-
-**1. Start the Database**
-- See `../digital-id-card-manager-e92f97cd/README.md` for DB setup and environment variables.
-
-**2. Start the Backend API**
-- Configure DB environment vars as in the backend README.
-- Run Flask API (`python run.py` or via WSGI).
-
-**3. Configure the Frontend**
-- Set `REACT_APP_API_URL` in your `.env` file.
-
-**4. Start the Frontend**
-```
-npm install
-npm start
-```
-
-- Open [http://localhost:3000](http://localhost:3000)
-- Sign up, log in, and test the app via the UI.
+- User **sign up/login** (JWT-based authentication)
+- **CRUD** for Digital ID Cards: create, edit, delete, and display as digital card
+- View all users
+- **ID Card Linking & Uniqueness**: Each card has a unique identifier, and is linkable to a profile
+- Responsive, modern, minimal UI
+- All API calls are secured with JWT via Authorization header
 
 ---
 
-## 🔒 Authentication
+## 🔗 Backend API Integration
 
-- JWT tokens returned from the backend are stored in `localStorage` and sent with each API call as `Authorization: Bearer ...` header.
+Endpoints used (see backend OpenAPI spec):
+
+- `POST   /auth/login` – User login
+- `POST   /auth/signup` – User signup
+- `GET    /idcards` – List digital ID cards
+- `POST   /idcards` – Create new ID card
+- `GET    /idcards/:id` – Get an ID card
+- `PUT    /idcards/:id` – Update an ID card
+- `DELETE /idcards/:id` – Delete an ID card
+- `GET    /users` – List all users
+- (Also: `/holders`, `/idcards/link` for unique linking logic)
 
 ---
 
-## 📂 Codebase Structure
+## 🧑‍💻 Development
 
-- Core App: `src/App.js`
-- API Logic: `src/api.js`
-- Pages: `src/pages/`
-- Components: `src/components/`
+- Update API endpoint URLs in `src/api.js` only if backend changes (matches Flask OpenAPI spec).
+- UI: modify `src/App.css`, `src/pages/*.css`, or components as desired.
+
+---
+
+## 📲 Usage Flow
+
+1. **Register / Login** (Email and password only)
+2. Manage your digital ID cards, or view/CRUD all (based on backend logic)
+3. Edit/Delete any card you own, or create new cards
+4. View cards via Dashboard or directly by link (URL/shareable)
 
 ---
 
@@ -104,9 +97,23 @@ npm test
 
 ---
 
-## 📃 Further Documentation
+## 🔒 Authentication
 
-- See backend and db READMEs for further details on backend configuration and table schema.
+- JWT tokens are stored in `localStorage`
+- Sent on every request in `Authorization: Bearer ...` header
 
 ---
 
+## 🏗️ Full Stack Integration
+
+1. **Database**: see backend/db README for details
+2. **Backend API**: must be running and accessible at `REACT_APP_API_URL`
+3. **Frontend**: configure `.env`, then run with `npm start`
+
+---
+
+## 📃 Further Docs
+
+- For backend/database configuration and schema, see their respective READMEs.
+
+---
