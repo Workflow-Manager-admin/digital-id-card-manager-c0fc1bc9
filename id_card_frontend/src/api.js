@@ -44,9 +44,15 @@ export async function loginUser(email, password) {
  * Sign up a user, returns { token, user }
  * Now submits only email, password, name (no role).
  */
+/**
+ * PUBLIC_INTERFACE
+ * Sign up a user, returns { token, user }
+ * Sends username and password as required by backend.
+ */
 export async function signupUser(email, password, _role, name) {
   /** Sign up a user, returns { token, user } */
-  return request("/auth/signup", "POST", { email, password, name });
+  // Use "username" for backend compatibility
+  return request("/auth/signup", "POST", { username: email, password });
 }
 
 // PUBLIC_INTERFACE
